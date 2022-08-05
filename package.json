@@ -1,0 +1,17 @@
+{
+  "name": "express-server",
+  "version": "1.0.0",
+  "description": "Um simples projeto demonstrando algumas possibilidades que a biblioteca ExpressJS disponibiliza para a criação e estruturação de rotas.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "global": "^4.4.0"
+  }
+}

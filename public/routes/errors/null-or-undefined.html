@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html style="font-family: monospace;">
+  <head>
+    <meta charset="utf-8" lang="en">
+    <title>Error | Null or undefined</title>
+    <link rel="stylesheet" href="/routes/errors/error-page.css" type="text/css">
+  </head>
+  <body>
+    <a href="/errors/error-types.html">Error types</a>
+    <hr>
+    <header>
+      <p class="info"><bold>Type:</bold> /errors/null-or-undefined</p>
+      <p class="info"><bold>Status code:</bold> 400</p>
+      <p class="info"><bold>Last update:</bold> 08/01/2022 01h18</p>
+      <h1>Null or undefined</h1>
+      <p>Value is null or undefined.</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>JSON Response</h2>
+          <pre>
+{
+  "type": "/errors/null-or-undefined",
+  "title": "Value is null or undefined.",
+  "status": 400,
+  "detail": "Value is null or undefined.",
+  "instance": "*"
+}</pre>
+      </section>
+      <section>
+        <h2>Possible reasons</h2>
+        <ul>
+          <li>Value was misspelled.</li>
+          <li>Some conection error between the server and the client.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Possible solutions</h2>
+        <ul>
+          <li>Check is the value is correct.</li>
+          <li>Check database <a href="#">server status</a>.</li>
+          <li>Try again later.</li>
+        </ul>
+      </section>
+
+    </main>
+    <hr>
+    <footer>
+      <h2>Support contact</h2>
+      <p>If none of the Possible solutions were helpfull, please contact the support.</p>
+      <p>Email: supportemail@email.com</p>
+    </footer>
+  </body>
+</html>

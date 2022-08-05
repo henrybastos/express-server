@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html style="font-family: monospace;">
+  <head>
+    <meta charset="utf-8" lang="en">
+    <title>Error | No users found</title>
+    <link rel="stylesheet" href="/routes/errors/error-page.css" type="text/css">
+  </head>
+  <body>
+    <a href="/errors/error-types.html">Error types</a>
+    <hr>
+    <header>
+      <p class="info"><bold>Type:</bold> /errors/no-users-found</p>
+      <p class="info"><bold>Status code:</bold> 404</p>
+      <p class="info"><bold>Last update:</bold> 08/01/2022 20h17</p>
+      <h1>No users found</h1>
+      <p>No users could be found.</p>
+    </header>
+
+    <main>
+      <section>
+      <h2>JSON Response</h2>
+        <pre>
+{
+  "type": "/errors/no-users-found",
+  "title": "No users could be found.",
+  "status": 404,
+  "detail": "No users could be found.",
+  "instance": "/users"
+}</pre>
+    </section>
+      <section>
+        <h2>Possible reasons</h2>
+        <ul>
+          <li>The server was offline. Check the <a href="#">server status</a> page.</li>
+          <li>There was a problem with the user's database.</li>
+        </ul>
+      </section>
+  
+      <section>
+        <h2>Possible solutions</h2>
+        <ul>
+          <li>Try again later.</li>
+        </ul>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <h2>Support contact</h2>
+      <p>If none of the Possible solutions were helpfull, please contact the support.</p>
+      <p>Email: supportemail@email.com</p>
+    </footer>
+  </body>
+</html>
