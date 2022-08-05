@@ -19,7 +19,7 @@ hr {
 }
 
 header, main, footer {
-  width: 800px;
+  width: 1000px;
 }
 
 header .info {
@@ -34,7 +34,6 @@ bold {
 
 pre {
   padding: 15px;
-  /* background-color: rgb(221, 221, 221); */
   border: 1px solid darkgray;
   margin: 0;
   width: min-content;

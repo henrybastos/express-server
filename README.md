@@ -1,6 +1,6 @@
-# Express Server 01
+# Express Server
 
-The main goals of this project are to exercise:
+The main goal of this project is to exercise:
 
 - ExpressJS' basic routing features.
 - GET and POST HTTP methods.
@@ -19,7 +19,7 @@ There are 3 main features in this project:
 
 ### `GET '/'`
 
-Shows the documentation of the project.
+Shows the home page of the project.
 
 ### `GET '/users'` 
 Returns all the users from the database in JSON. Example:
@@ -79,21 +79,20 @@ ___
 
 ## 3. Error handling
 
-All the errors are returned following the standards of the document [RFC7807](https://datatracker.ietf.org/doc/html/rfc7807).
+All the errors are returned following the standards of the document [RFC7807](https://datatracker.ietf.org/doc/html/rfc7807). 
 
-`/errors/error-types` 
-Main page with all the Error types listed.
+They can be found at `/errors/error-types.html`.
 
-### 3.1. `/errors/null-or-undefined`
- The current value is null or undefined.
+### 3.1. `/errors/null-or-undefined.html`
+The current value is null or undefined.
 
- Returned by:
+Returned by:
  - [`GET '/user/:username'`](#get-userusername)
  - [`POST '/add-user'`](#post-add-user)
 
 ```json
 {
-  "type": "/errors/null-or-undefined",
+  "type": "/errors/null-or-undefined.html",
   "title": "Value is Null or Undefined.",
   "status": 400,
   "detail": "Value is Null or Undefined.",
@@ -101,7 +100,7 @@ Main page with all the Error types listed.
 }
 ```
 
-### 3.2. `/errors/user/username-taken` 
+### 3.2. `/errors/user/username-taken.html` 
 Username was already taken by another user.
 
 Returned by 
@@ -109,7 +108,7 @@ Returned by
 
 ```json
 {
-  "type": "/errors/user/username-taken",
+  "type": "/errors/user/username-taken.html",
   "title": "Username was already taken by another user.",
   "status": 400,
   "detail": "Username was already taken by another user.",
@@ -117,7 +116,7 @@ Returned by
 }
 ```
 
-### 3.3. `/errors/no-users-found` 
+### 3.3. `/errors/no-users-found.html` 
 No users could be found. 
 
 Returned by 
@@ -125,7 +124,7 @@ Returned by
 
 ```json
 {
-  "type": "/errors/no-users-found",
+  "type": "/errors/no-users-found.html",
   "title": "No users could be found.",
   "status": 404,
   "detail": "No users could be found.",
@@ -133,7 +132,7 @@ Returned by
 }
 ```
 
-### 3.4. `/errors/user/user-not-found` 
+### 3.4. `/errors/user/user-not-found.html` 
 User could not be found.
 
 Returned by 
@@ -141,7 +140,7 @@ Returned by
 
 ```json
 {
-  "type": "/errors/user/user-not-found",
+  "type": "/errors/user/user-not-found.html",
   "title": "User could not be found.",
   "status": 404,
   "detail": "User could not be found.",

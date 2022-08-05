@@ -10,11 +10,11 @@ const ANSI_COLORS = { // Aesthetic only / Apenas estético
 }
 
 const ERROR_TYPES = {
-  NO_USERS_FOUND: {type: '/errors/no-users-found', detail: 'No users could be found.'},
-  NULL_OR_UNDEFINED: {type: '/errors/null-or-undefined', detail: 'Value is Null or Undefined.'},
-  USER_NOT_FOUND: {type: '/errors/user/user-not-found', detail: 'User could not be found.'},
-  USER_NAME_TAKEN: {type: '/errors/user/name-taken', detail: 'Name was already taken by another user.'},
-  USER_USERNAME_TAKEN: {type: '/errors/user/username-taken', detail: 'Username was already taken by another user.'}
+  NO_USERS_FOUND: {type: '/errors/no-users-found.html', detail: 'No users could be found.'},
+  NULL_OR_UNDEFINED: {type: '/errors/null-or-undefined.html', detail: 'Value is Null or Undefined.'},
+  USER_NOT_FOUND: {type: '/errors/user/user-not-found.html', detail: 'User could not be found.'},
+  USER_NAME_TAKEN: {type: '/errors/user/name-taken.html', detail: 'Name was already taken by another user.'},
+  USER_USERNAME_TAKEN: {type: '/errors/user/username-taken.html', detail: 'Username was already taken by another user.'}
 }
 
 let users = [
@@ -46,7 +46,7 @@ app.use('/errors',express.static(__dirname + '/public/routes/errors'));
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.send('<h1>Hello world!</h1>');
+  res.sendFile(__dirname + '/public/routes/home.html');
 })
 
 app.get('/users', (req, res) => {

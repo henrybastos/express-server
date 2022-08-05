@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" lang="en">
+    <title>Express Server | Home</title>
+    <link rel="stylesheet" href="/routes/home.css">
+  </head>
+  <body style="font-family: 'Poppins', 'consolas', sans-serif;">
+    <main>
+      <h1>Express Server</h1>
+  
+      <section>
+        <p>The main goal of this project is to exercise:</p>
+        <ul>
+          <li>ExpressJS' basic routing features.</li>
+          <li>GET and POST HTTP methods.</li>
+          <li>Error handling.</li>
+          <li>General protocols and standards.</li>
+          <li>Documentation and organization.</li>
+        </ul>
+      </section>
+  
+      <hr>
+
+      <section>
+        <h2 id="1-features">1. Features</h2>
+    
+        <p>There are 3 main features in this project:</p>
+        <ul>
+          <li>Get all the users from the database</li>
+          <li>Get a specific user from the database</li>
+          <li>Add a user to the database</li>
+        </ul>
+      </section>
+  
+      <hr>
+
+      <section>
+        <h2 id="2-routes">2. Routes</h2>
+    
+        <h3 id="get-/">GET '/'</h3>
+        <p>Shows the documentation of the project.</p>
+    
+        <h3 id="get-/users">GET '/users'</h3>
+        <p>Returns all the users from the database in JSON. Example:</p>
+    
+        <pre class="json-code">
+[
+  {
+    "name": "Henry Bastos da Silva",
+    "username": "henry_bastos",
+    "age": 19
+  },
+  {
+    "name": "Jane Doe",
+    "username": "janeDoe",
+    "age": 38
+  }
+]</pre>
+    
+        <p>If it fails to return the users, it will return the error type <a href="/errors/no-users-found.html">/errors/no-users-found.html</a>.</p>
+    
+        <h3 id="get-/user/:username">GET '/user/:username'</h3>
+        <p>Returns a specific user from the database in JSON.</p>
+    
+        <ul>
+          <li>If the username is null or undefined, it will return <a href="/errors/null-or-undefined.html">/errors/null-or-undefined.html</a>.</li>
+          <li>If the user can not be found, it will return <a href="/errors/user/user-not-found.html">/errors/user/user-not-found.html</a>.</li>
+        </ul>
+    
+        <h3 id="post-/add-user">POST '/add-user'</h3>
+        <p>Adds a user to the database. It requires the following structure:</p>
+    
+        <pre class="json-code">
+{
+  "name": "Name and Surname", 
+  "username": "username", 
+  "age": 99
+}</pre>
+    
+        <p>Successfull if all the requirements are pleased:</p>
+    
+        <dl>
+          <dt class="c-code">name</dt>
+          <dd><strong>Not Unique:</strong> Do not need to be unique in the database.</dd>
+          <dd><strong>Not null/undefined:</strong> It can not be <i>null</i> nor <i>undefined</i>, otherwise it will return <a href="/errors/null-or-undefined.html">/errors/null-or-undefined.html</a>.</dd>
+          <dd><strong>String:</strong> Required as a <i>String</i>.</dd>
+    
+          <dt class="c-code">username</dt>
+          <dd><strong>Unique:</strong> Required to be unique in the database, otherwise it will return <a href="/errors/user/username-taken.html">/errors/user/username-taken.html</a>.</dd>
+          <dd><strong>Not null/undefined:</strong> It can not be null nor undefined, otherwise it will return <a href="/errors/null-or-undefined.html">/errors/null-or-undefined.html</a>.</dd>
+          <dd><strong>String:</strong> Required as a <i>String</i>.</dd>
+          
+          <dt class="c-code">age</dt>
+          <dd><strong>Not Unique:</strong> Do not need to be unique in the database.</dd>
+          <dd><strong>Not null/undefined:</strong> It can not be <i>null</i> nor <i>undefined</i>, otherwise it will return <a href="/errors/null-or-undefined.html">/errors/null-or-undefined.html</a>.</dd>
+          <dd><strong>Integer:</strong> Required as an <i>Integer</i>.</dd>
+        </dl>
+      </section>
+      
+      <hr>
+  
+      <section>
+        <h2>3. Error handling</h2>
+    
+        <p>All the errors returned are following the standards of the document <a href="https://datatracker.ietf.org/doc/html/rfc7807">RFC7807</a>. They can be found at <a href="/errors/error-types.html">/errors/error-types.html</a>.</p>
+    
+        <h3>3.1. /errors/null-or-undefined.html</h3>
+        <p>The current value is null or undefined.</p>
+    
+        <dl>
+          <dt>Returned by:</dt>
+          <dd><a href="#get-/user/:username">GET '/user/:username'</a></dd>
+          <dd><a href="#post-/add-user">POST '/add-user'</a></dd>
+        </dl>
+    
+        <pre class="json-code">
+{
+  "type": "/errors/null-or-undefined.html",
+  "title": "Value is Null or Undefined.",
+  "status": 400,
+  "detail": "Value is Null or Undefined.",
+  "instance": "*"
+}</pre>
+    
+        <h3>3.2. /errors/user/username-taken.html</h2>
+  
+        <p>Username was already taken by another user.</p>
+  
+        <dl>
+          <dt>Returned by</dt>
+          <dd><a href="#post-/add-user">POST '/add-user'</a></dd>
+        </dl>
+  
+        <pre class="json-code">
+{
+  "type": "/errors/user/username-taken.html",
+  "title": "Username was already taken by another user.",
+  "status": 400,
+  "detail": "Username was already taken by another user.",
+  "instance": "/add-user"
+}</pre>
+  
+        <h3>3.3. /errors/no-users-found.html</h3>
+  
+        No users could be found. 
+  
+        <dl>
+          <dt>Returned by</dt>
+          <dd><a href="#get-/users">GET '/users'</a></dd>
+        </dl>
+  
+        <pre class="json-code">
+{
+  "type": "/errors/no-users-found.html",
+  "title": "No users could be found.",
+  "status": 404,
+  "detail": "No users could be found.",
+  "instance": "/users"
+}</pre>
+  
+        <h3>3.4. /errors/user/user-not-found.html</h3>
+  
+        User could not be found.
+  
+        <dl>
+          <dt>Returned by</dt>
+          <dd><a href="#get-/user/:username">GET '/user/:username'</a></dd>
+        </dl>
+  
+        <pre class="json-code">
+{
+  "type": "/errors/user/user-not-found.html",
+  "title": "User could not be found.",
+  "status": 404,
+  "detail": "User could not be found.",
+  "instance": "/users/:username"
+}</pre>
+      </section>
+    </main>
+
+    <footer>
+          <hr>
+      <p>Page created for the Express Server GitHub project, uploaded at <a href="https://github.com/henrybastos/express-server">https://github.com/henrybastos/express-server</a>.</p>
+    </footer>
+  </body>
+</html>

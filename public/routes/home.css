@@ -1,0 +1,39 @@
+body {
+  margin-left: 20px;
+  display: grid;
+  justify-content: center;
+}
+
+pre {
+  padding: 15px;
+  border: 1px solid darkgray;
+  margin: 0;
+  width: min-content;
+  height: auto;
+  tab-size: 20px;
+}
+.c-code {
+  padding: 0 5px;
+  background: lightgray;
+  width: min-content;
+  border-radius: 3px;
+}
+
+main {
+  width: 1000px;
+}
+
+.json-code {
+  position: relative;
+}
+
+.json-code::before {
+  content: 'JSON';
+  position: absolute;
+  padding: 1px 5px;
+  background: lightgray;
+  width: min-content;
+  border-radius: 0 0 0 3px;
+  right: 0;
+  top: 0;
+}
