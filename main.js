@@ -3,18 +3,45 @@ const cors = require('cors');
 const app = express();
 const PORT = 5050;
 
-const ANSI_COLORS = { // Aesthetic only / Apenas estético
+const ANSI_COLORS = { // Aesthetic of the console logs
   RED: '\u001b[31m',
   GREEN: '\u001b[32m',
   RESET: '\u001b[0m'
 }
 
+let errorLog = {errors: []};
+
 const ERROR_TYPES = {
-  NO_USERS_FOUND: {type: '/errors/no-users-found.html', detail: 'No users could be found.'},
-  NULL_OR_UNDEFINED: {type: '/errors/null-or-undefined.html', detail: 'Value is Null or Undefined.'},
-  USER_NOT_FOUND: {type: '/errors/user/user-not-found.html', detail: 'User could not be found.'},
-  USER_NAME_TAKEN: {type: '/errors/user/name-taken.html', detail: 'Name was already taken by another user.'},
-  USER_USERNAME_TAKEN: {type: '/errors/user/username-taken.html', detail: 'Username was already taken by another user.'}
+  NO_USERS_FOUND: {
+    type: '/errors/no-users-found.html',
+    title: 'No users could be found.',
+    status: 404,
+    detail: 'No users could be found.'
+  },
+  NULL_OR_UNDEFINED: {
+    type: '/errors/null-or-undefined.html', 
+    detail: 'Value is Null or Undefined.',
+    title: 'Value is Null or Undefined.',
+    status: 400,
+  },
+  USER_NOT_FOUND: {
+    type: '/errors/user/user-not-found.html', 
+    detail: 'User could not be found.',
+    title: 'User could not be found.',
+    status: 404
+  },
+  USER_NAME_TAKEN: {
+    type: '/errors/user/name-taken.html', 
+    detail: 'Name was already taken by another user.',
+    title: 'Name was already taken by another user.',
+    status: 400
+  },
+  USER_USERNAME_TAKEN: {
+    type: '/errors/user/username-taken.html', 
+    detail: 'Username was already taken by another user.',
+    title: 'Username was already taken by another user.',
+    status: 400
+  }
 }
 
 let users = [
@@ -22,22 +49,28 @@ let users = [
   { name: 'Jane Doe', username: 'janeDoe', age: 38 }
 ];
 
-const checkExistingUser = (userToCheck) => {
-  return {
+// ==================== CHECKS ====================
+
+const checkExistingUser = (userToCheck, req) => {
+  let checks = {
     // name: users.map(user => user.name).indexOf(userToCheck.name) === -1 ? false : true,
     username: users.map(user => user.username).indexOf(userToCheck.username) === -1 ? false : true
+  };
+
+  if (checks.username) {
+    errorLog.errors.push({...ERROR_TYPES.USER_USERNAME_TAKEN, instance: req.originalUrl});
+    return false;
   }
 };
 
-const registerError = (errorArray, errorBody) => {
-  let error = errorBody;
-  errorArray.push(error);
-}
-
-const returnError = (errorArray) => {
-  // errorArray?.forEach(error => console.error(`🔴${ANSI_COLORS.RED} Error: ${error}${ANSI_COLORS.RESET}`))
-  // throw new Error(errorArray?.reduce((prev, curr) => `${prev} ${curr}`));
-  return {errors: errorArray};
+const checkNullOrUndefined = (value, key, req) => {
+  if (value === undefined || value === null) {errorLog.errors.push({
+    ...ERROR_TYPES.NULL_OR_UNDEFINED, 
+    instance: req.originalUrl, 
+    key: key,
+  });
+  return false;
+  }
 }
 
 app.use(express.json());
@@ -50,19 +83,12 @@ app.get('/', (req, res) => {
 })
 
 app.get('/users', (req, res) => {
-  let errorLog = [];
+  errorLog.errors = [];
   try {
     if (users) {
       res.json(users);
     } else {
-      registerError(errorLog, {
-        type: ERROR_TYPES.NO_USERS_FOUND.type,
-        title: 'No users could be found.',
-        status: 404,
-        detail: ERROR_TYPES.NO_USERS_FOUND.detail,
-        instance: req.originalUrl
-      })
-      returnError(errorLog);
+      errorLog.errors.push({...ERROR_TYPES.NO_USERS_FOUND, instance: req.originalUrl});
       console.error(errorLog);
       res.status(404).send(errorLog);
     }
@@ -73,19 +99,13 @@ app.get('/users', (req, res) => {
 })
 
 app.get('/user/:username', (req, res) => {
-  let errorLog = [];
+  errorLog.errors = [];
   try {
     let user = users.filter(obj => obj?.username === req?.params?.username);
     if (user.length > 0) {
       res.json(user[0]);
     } else {
-      registerError(errorLog, {
-        type: ERROR_TYPES.USER_NOT_FOUND.type,
-        title: 'User could not be found.',
-        status: 404,
-        detail: ERROR_TYPES.USER_NOT_FOUND.detail,
-        instance: req.originalUrl
-      });
+      errorLog.errors.push({...ERROR_TYPES.USER_NOT_FOUND, instance: req.originalUrl});
       res.status(404).send({errors: errorLog});
     }
   } catch (error) {
@@ -95,52 +115,28 @@ app.get('/user/:username', (req, res) => {
 })
 
 app.post('/add-user', (req, res) => {
-  let errorLog = [];
+  errorLog.errors = [];
+
   try {
     let newUser = {
-      name: req?.body?.name || registerError(errorLog, {
-        type: ERROR_TYPES.NULL_OR_UNDEFINED.type, 
-        title: 'Name is null or undefined.',
-        status: 400,
-        detail: ERROR_TYPES.NULL_OR_UNDEFINED.detail,
-        instance: req.originalUrl
-      }),
-      username: req?.body?.username || registerError(errorLog, {
-        type: ERROR_TYPES.NULL_OR_UNDEFINED, 
-        title: 'Username is null or undefined.',
-        status: 400,
-        detail: ERROR_TYPES.NULL_OR_UNDEFINED.detail,
-        instance: req.originalUrl
-      }),
-      age: req?.body?.age || registerError(errorLog, {
-        type: ERROR_TYPES.NULL_OR_UNDEFINED, 
-        title: 'Age is null or undefined.',
-        status: 400,
-        detail: ERROR_TYPES.NULL_OR_UNDEFINED.detail,
-        instance: req.originalUrl
-      })
+      name: req?.body?.name,
+      username: req?.body?.username,
+      age: req?.body?.age
     };
 
-    let checkResult = checkExistingUser(newUser); 
-    let checkResultKeys = Object.keys(checkResult);
+    let newUserChecks = [
+      checkNullOrUndefined(newUser.name, 'name', req),
+      checkNullOrUndefined(newUser.username, 'username', req),
+      checkNullOrUndefined(newUser.age, 'age', req),
+      checkExistingUser(newUser, req)
+    ];
 
-    if (checkResultKeys.every(key => checkResult[key] === false)) {
-      users.push(newUser);
-      console.log(newUser);
-      console.log(`${ANSI_COLORS.GREEN}User created\n🟢 No errors. :)${ANSI_COLORS.RESET}`);
-      res.status(201).json(users);
+    if (newUserChecks.some(check => check === false)) {
+      console.error(errorLog);
+      res.status(400).send(errorLog);
     } else {
-      checkResult?.username && registerError(errorLog, {
-        type: ERROR_TYPES.USER_USERNAME_TAKEN.type, 
-        title: 'Username already used.', 
-        status: 400,
-        detail: ERROR_TYPES.USER_USERNAME_TAKEN.detail,
-        instance: req.route.path,
-        username: newUser.username
-      });
-      returnError(errorLog);
-      console.error({errors: errorLog});
-      res.status(400).send({errors: errorLog});
+      users.push(newUser);
+      res.status(201).json(users);
     }
   } 
   catch (error) {
