@@ -15,7 +15,7 @@ There are 3 main features in this project:
 - Get a specific user from the database
 - Add a user to the database
 
-## 2. Routes
+## 2. Endpoints
 
 ### `GET '/'`
 
